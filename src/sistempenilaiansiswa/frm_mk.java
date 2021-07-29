@@ -76,7 +76,7 @@ public class frm_mk extends javax.swing.JFrame {
         btn_batal.setEnabled(false);
     }
     
-    String data[] = new String [4];
+    String data[] = new String [2];
     private void settableload(){
         String stat = "";
         

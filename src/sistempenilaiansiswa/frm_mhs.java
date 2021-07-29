@@ -243,6 +243,11 @@ public class frm_mhs extends javax.swing.JFrame {
         });
 
         btn_hapus.setText("Hapus");
+        btn_hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_hapusActionPerformed(evt);
+            }
+        });
 
         btn_simpan.setText("Simpan");
         btn_simpan.addActionListener(new java.awt.event.ActionListener() {
@@ -407,6 +412,7 @@ public class frm_mhs extends javax.swing.JFrame {
         btn_simpan.setEnabled(true);
         btn_ubah.setEnabled(false);
         btn_hapus.setEnabled(false);
+        btn_batal.setEnabled(true);
         btn_keluar.setEnabled(false);
         aktif_teks();
     }//GEN-LAST:event_btn_tambahActionPerformed
@@ -481,15 +487,18 @@ public class frm_mhs extends javax.swing.JFrame {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database, user, pass);
                 Statement stt = kon.createStatement();
-                String SQL = "Update 't_mahasiswa' "
-                        + "Set 'nim'='"+nim+"',"
-                        + "'nama'='"+nama+"',"
-                        + "'ttl'='"+tempat_lahir+"',"
-                        + "'tgl_lahir'='"+tgl_lahir+"',"
-                        + "'alamat'='"+alamat+"' "
-                    + "Where "
-                    + "'nim'='"+tableModel.getValueAt(row, 0).toString()+"';";
-                stt.executeQuery(SQL);
+                String SQL = "UPDATE t_mahasiswa "
+                        + "SET "
+                        + "nim = '"+nim+"',"
+                        + "nama = '"+nama+"',"
+                        + "ttl = '"+tempat_lahir+"',"
+                        + "tgl_lahir = '"+tgl_lahir+"',"
+                        + "alamat = '"+alamat+"'"
+                        + "WHERE nim= '" + tableModel.getValueAt(row, 0).toString() + "'";
+                
+                stt.executeUpdate(SQL);
+                
+                
                 data[0] = nim;
                 data[1] = nama;
                 data[2] = tempat_lahir;
@@ -554,6 +563,27 @@ public class frm_mhs extends javax.swing.JFrame {
         btn_simpan.setEnabled(true);
         
     }//GEN-LAST:event_btn_batalActionPerformed
+
+    private void btn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hapusActionPerformed
+        // TODO add your handling code here:
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "DELETE from t_mahasiswa "
+                         + "where "
+                         + "nim='"+tableModel.getValueAt(row, 0).toString()+"'";
+            
+            stt.executeUpdate(SQL);
+            tableModel.removeRow(row);
+            stt.close();
+            kon.close();
+            membersihkan_teks();
+        }
+        catch(Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_btn_hapusActionPerformed
 
     /**
      * @param args the command line arguments
