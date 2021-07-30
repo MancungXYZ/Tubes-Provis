@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
  *
- * @author Reihan
+ * @author Reihan & Adhira
  */
 public class frm_mk extends javax.swing.JFrame {
 
@@ -327,7 +327,7 @@ public class frm_mk extends javax.swing.JFrame {
         String data[] = new String[2];
         
         if ((txt_no_mk.getText().isEmpty()) || (txt_nama_mk.getText().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "data mata kuliah tidak boleh kosong. silahkan dilengkapi");
+            JOptionPane.showMessageDialog(null, "Data mata kuliah tidak boleh kosong, Harap isi !");
             txt_no_mk.requestFocus();
         }
         else {
@@ -386,7 +386,7 @@ public class frm_mk extends javax.swing.JFrame {
         
         
         if ((no_mk.isEmpty()) || (nama_mk.isEmpty())) {
-            JOptionPane.showMessageDialog(null, "data tidak boleh kosong, Silahkan lengkapi");
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, Harap isi !");
             txt_no_mk.requestFocus();
         }
         else {

@@ -7,12 +7,11 @@ package sistempenilaiansiswa;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
 import java.awt.Component;
 
 /**
  *
- * @author Reihan
+ * @author Reihan & Adhira
  */
 public class SistemPenilaianSiswa {
 

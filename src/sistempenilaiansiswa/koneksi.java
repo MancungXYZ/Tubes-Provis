@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Reihan
+ * @author Reihan & Adhira
  */
 public class koneksi {
     public Properties myPanel, myLanguage;

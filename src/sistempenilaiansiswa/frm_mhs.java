@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  *
- * @author Reihan
+ * @author Reihan & Adhira
  */
 public class frm_mhs extends javax.swing.JFrame {
 
@@ -422,7 +422,7 @@ public class frm_mhs extends javax.swing.JFrame {
         String data[] = new String[5];
         
         if ((txt_nim.getText().isEmpty()) || (txt_tanggal_lahir.getText().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "data tidak boleh kosong. silahkan dilengkapi");
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, Harap isi !");
             txt_nim.requestFocus();
         }
         else {
@@ -479,7 +479,7 @@ public class frm_mhs extends javax.swing.JFrame {
         String alamat = txt_alamat.getText();
         
         if ((nim.isEmpty()) || (alamat.isEmpty())) {
-            JOptionPane.showMessageDialog(null, "data tidak boleh kosong, Silahkan lengkapi");
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, Harap isi !");
             txt_nim.requestFocus();
         }
         else {
