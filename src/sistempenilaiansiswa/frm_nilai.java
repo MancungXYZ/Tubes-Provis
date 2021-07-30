@@ -32,6 +32,8 @@ public class frm_nilai extends javax.swing.JFrame {
         TableNilai.setModel(tableModel);
         
         settableload();
+        getDataComboBox();
+        non_aktif_teks();
     }
     
     String data[] = new String [15];
@@ -112,6 +114,74 @@ public class frm_nilai extends javax.swing.JFrame {
                     }
                 };
     }
+    
+    //Menampilkan data ke combobox
+    int row = 0;
+    public void getDataComboBox() {
+        row = TableNilai.getSelectedRow();
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "select nama from t_mahasiswa";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                String nama = res.getString(1);
+                combo_nama.addItem(nama);
+            }
+            
+            String sql = "Select nama_mk FROM t_mata_kuliah";
+            ResultSet rs = stt.executeQuery(sql);
+            while (rs.next()) {
+                String nama_mk = rs.getString(1);
+                combo_mk.addItem(nama_mk);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+          } catch (Exception ex) {
+              JOptionPane.showMessageDialog(null,
+                        ex.getMessage(), "Error",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+          }
+    }
+    
+    public void tampil_field(){
+        row = TableNilai.getSelectedRow();
+        combo_nama.setSelectedItem(tableModel.getValueAt(row, 0).toString());
+        combo_mk.setSelectedItem(tableModel.getValueAt(row, 1).toString());
+    }
+    
+    public void non_aktif_teks () {
+        combo_nama.setEnabled(false);
+        txt_nim.setEnabled(false);
+        txt_kehadiran.setEnabled(false);
+        txt_tgs1.setEnabled(false);
+        txt_tgs2.setEnabled(false);
+        txt_tgs3.setEnabled(false);
+        
+        combo_mk.setEnabled(false);
+        txt_kodeMk.setEnabled(false);
+        txt_uts.setEnabled(false);
+        text_uas.setEnabled(false);
+        txt_angkatan.setEnabled(false);
+    }
+    
+    public void aktif_teks () {
+        combo_nama.setEnabled(true);
+        txt_nim.setEnabled(true);
+        txt_kehadiran.setEnabled(true);
+        txt_tgs1.setEnabled(true);
+        txt_tgs2.setEnabled(true);
+        txt_tgs3.setEnabled(true);
+        
+        combo_mk.setEnabled(true);
+        txt_kodeMk.setEnabled(true);
+        txt_uts.setEnabled(true);
+        text_uas.setEnabled(true);
+        txt_angkatan.setEnabled(true);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -132,31 +202,31 @@ public class frm_nilai extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txt_nim = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txt_kehadiran = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        txt_tgs1 = new javax.swing.JTextField();
+        txt_tgs2 = new javax.swing.JTextField();
+        txt_tgs3 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         combo_mk = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         txt_kodeMk = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        txt_uts = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        text_uas = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        txt_angkatan = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         TableNilai = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btn_simpan = new javax.swing.JButton();
+        btn_ubah = new javax.swing.JButton();
+        btn_hapus = new javax.swing.JButton();
+        btn_save = new javax.swing.JButton();
+        btn_batal = new javax.swing.JButton();
+        btn_keluar = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -221,8 +291,6 @@ public class frm_nilai extends javax.swing.JFrame {
 
         jLabel5.setText("Nim");
 
-        txt_nim.setEditable(false);
-
         jLabel6.setText("Kehadiran");
 
         jLabel7.setText("Tugas 1");
@@ -242,8 +310,6 @@ public class frm_nilai extends javax.swing.JFrame {
 
         jLabel11.setText("Kode MK");
 
-        txt_kodeMk.setEditable(false);
-
         jLabel12.setText("UTS");
 
         jLabel13.setText("UAS");
@@ -261,19 +327,44 @@ public class frm_nilai extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        TableNilai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableNilaiMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TableNilai);
 
-        jButton1.setText("Tambah");
+        btn_simpan.setText("Tambah");
+        btn_simpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_simpanActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Ubah");
+        btn_ubah.setText("Ubah");
 
-        jButton3.setText("Hapus");
+        btn_hapus.setText("Hapus");
 
-        jButton4.setText("Simpan");
+        btn_save.setText("Simpan");
+        btn_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_saveActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Batal");
+        btn_batal.setText("Batal");
+        btn_batal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_batalActionPerformed(evt);
+            }
+        });
 
-        jButton6.setText("Keluar");
+        btn_keluar.setText("Keluar");
+        btn_keluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_keluarActionPerformed(evt);
+            }
+        });
 
         jLabel15.setText("Pertemuan");
 
@@ -303,18 +394,18 @@ public class frm_nilai extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel6)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txt_kehadiran, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel15))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel8)
                                             .addGap(18, 18, 18)
-                                            .addComponent(jTextField5))
+                                            .addComponent(txt_tgs2))
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                             .addComponent(jLabel7)
                                             .addGap(18, 18, 18)
-                                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(txt_tgs1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(85, 85, 85)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
@@ -328,26 +419,26 @@ public class frm_nilai extends javax.swing.JFrame {
                                         .addComponent(combo_mk, 0, 132, Short.MAX_VALUE)
                                         .addComponent(txt_kodeMk))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jTextField9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                                        .addComponent(jTextField8, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField10, javax.swing.GroupLayout.Alignment.LEADING))))
+                                        .addComponent(text_uas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                                        .addComponent(txt_uts, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txt_angkatan, javax.swing.GroupLayout.Alignment.LEADING))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txt_tgs3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btn_simpan)
                         .addGap(60, 60, 60)
-                        .addComponent(jButton2)
+                        .addComponent(btn_ubah)
                         .addGap(66, 66, 66)
-                        .addComponent(jButton3)
+                        .addComponent(btn_hapus)
                         .addGap(79, 79, 79)
-                        .addComponent(jButton4)
+                        .addComponent(btn_save)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5)
+                        .addComponent(btn_batal)
                         .addGap(66, 66, 66)
-                        .addComponent(jButton6)))
+                        .addComponent(btn_keluar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -374,36 +465,36 @@ public class frm_nilai extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_kehadiran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_uts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_tgs1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(text_uas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_tgs2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_angkatan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_tgs3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
+                    .addComponent(btn_simpan)
+                    .addComponent(btn_ubah)
+                    .addComponent(btn_hapus)
+                    .addComponent(btn_save)
+                    .addComponent(btn_batal)
+                    .addComponent(btn_keluar))
                 .addContainerGap())
         );
 
@@ -425,7 +516,7 @@ public class frm_nilai extends javax.swing.JFrame {
                         + "where nama= '"+nama+"' ";
             ResultSet res = stt.executeQuery(SQL);
             while (res.next()) {
-                txt_nim.setText(res.getString(1));      
+                txt_nim.setText(res.getString("nim").toString());  
             }
             
             res.close();
@@ -443,6 +534,77 @@ public class frm_nilai extends javax.swing.JFrame {
     private void combo_mkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_mkActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_combo_mkActionPerformed
+
+    private void TableNilaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableNilaiMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount()== 1) {
+            tampil_field();
+        }
+    }//GEN-LAST:event_TableNilaiMouseClicked
+
+    private void btn_keluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_keluarActionPerformed
+        // TODO add your handling code here:
+        frm_utama utm = new frm_utama();
+        utm.setVisible(true);
+        
+        this.setVisible(false);
+    }//GEN-LAST:event_btn_keluarActionPerformed
+
+    private void btn_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_simpanActionPerformed
+        // TODO add your handling code here:
+        aktif_teks();
+        
+        combo_nama.requestFocus();
+        btn_hapus.setEnabled(false);
+        btn_ubah.setEnabled(false);
+        
+    }//GEN-LAST:event_btn_simpanActionPerformed
+
+    private void btn_batalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_batalActionPerformed
+        // TODO add your handling code here:
+        btn_hapus.setEnabled(true);
+        btn_ubah.setEnabled(true);
+        
+        non_aktif_teks();
+    }//GEN-LAST:event_btn_batalActionPerformed
+
+    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        // TODO add your handling code here:
+//        String data[] = new String[2];
+//        
+//        if ((txt_no_mk.getText().isEmpty()) || (txt_nama_mk.getText().isEmpty())) {
+//            JOptionPane.showMessageDialog(null, "Data mata kuliah tidak boleh kosong, Harap isi !");
+//            txt_no_mk.requestFocus();
+//        }
+//        else {
+//            try {
+//                Class.forName(driver);
+//                Connection kon = DriverManager.getConnection(database, user, pass);
+//                Statement stt = kon.createStatement();
+//                String SQL = "INSERT INTO t_mata_kuliah (kd_mk,"
+//                        + "nama_mk) "
+//                        + "VALUES"
+//                        + "('"+txt_no_mk.getText()+"',"
+//                        + "'"+txt_nama_mk.getText()+"')";
+//                
+//                stt.executeUpdate(SQL);
+//                data[0] = txt_no_mk.getText();
+//                data[1] = txt_nama_mk.getText();
+//                tableModel.insertRow(0, data);
+//                stt.close();
+//                kon.close();
+//                btn_ubah.setEnabled(true);
+//                btn_hapus.setEnabled(true);
+//                resetText();
+//                
+//                
+//            }
+//            catch (Exception e) {
+//                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//        }
+        
+    }//GEN-LAST:event_btn_saveActionPerformed
         
     /**
      * @param args the command line arguments
@@ -481,14 +643,14 @@ public class frm_nilai extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TableNilai;
+    private javax.swing.JButton btn_batal;
+    private javax.swing.JButton btn_hapus;
+    private javax.swing.JButton btn_keluar;
+    private javax.swing.JButton btn_save;
+    private javax.swing.JButton btn_simpan;
+    private javax.swing.JButton btn_ubah;
     private javax.swing.JComboBox<String> combo_mk;
     private javax.swing.JComboBox<String> combo_nama;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -508,14 +670,14 @@ public class frm_nilai extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField text_uas;
+    private javax.swing.JTextField txt_angkatan;
+    private javax.swing.JTextField txt_kehadiran;
     private javax.swing.JTextField txt_kodeMk;
     private javax.swing.JTextField txt_nim;
+    private javax.swing.JTextField txt_tgs1;
+    private javax.swing.JTextField txt_tgs2;
+    private javax.swing.JTextField txt_tgs3;
+    private javax.swing.JTextField txt_uts;
     // End of variables declaration//GEN-END:variables
 }
