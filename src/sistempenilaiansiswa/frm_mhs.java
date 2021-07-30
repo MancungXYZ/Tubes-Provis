@@ -31,7 +31,7 @@ public class frm_mhs extends javax.swing.JFrame {
         pass = dbsetting.SettingPanel("DBPassword");
         
         tabel_mahasiswa.setModel(tableModel);
-        
+        nonaktifkan_teks();
         settableload();
     }
     String data[] = new String [5];
@@ -264,6 +264,11 @@ public class frm_mhs extends javax.swing.JFrame {
         });
 
         btn_keluar.setText("Keluar");
+        btn_keluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_keluarActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(204, 204, 204), null, null));
 
@@ -403,6 +408,7 @@ public class frm_mhs extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tambahActionPerformed
@@ -452,7 +458,11 @@ public class frm_mhs extends javax.swing.JFrame {
                 stt.close();
                 kon.close();
                 membersihkan_teks();
-                btn_simpan.setEnabled(false);
+                btn_simpan.setEnabled(true);
+                btn_ubah.setEnabled(true);
+                btn_hapus.setEnabled(true);
+                btn_batal.setEnabled(true);
+                btn_keluar.setEnabled(true);
                 nonaktifkan_teks();
                 
                 
@@ -561,6 +571,8 @@ public class frm_mhs extends javax.swing.JFrame {
         btn_ubah.setEnabled(true);
         btn_hapus.setEnabled(true);
         btn_simpan.setEnabled(true);
+        btn_keluar.setEnabled(true);
+        nonaktifkan_teks();
         
     }//GEN-LAST:event_btn_batalActionPerformed
 
@@ -584,6 +596,14 @@ public class frm_mhs extends javax.swing.JFrame {
             System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_btn_hapusActionPerformed
+
+    private void btn_keluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_keluarActionPerformed
+        // TODO add your handling code here:
+        frm_utama utama = new frm_utama();
+        utama.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_btn_keluarActionPerformed
 
     /**
      * @param args the command line arguments

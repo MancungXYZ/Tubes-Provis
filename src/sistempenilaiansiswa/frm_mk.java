@@ -32,6 +32,7 @@ public class frm_mk extends javax.swing.JFrame {
         TableMataKuliah.setModel(tableModel);
         
         settableload();
+        non_aktif_text();
     }
     
     private javax.swing.table.DefaultTableModel tableModel = getDefaultTabelModel();
@@ -64,6 +65,16 @@ public class frm_mk extends javax.swing.JFrame {
     public void resetText() {
         txt_no_mk.setText("");
         txt_nama_mk.setText("");
+    }
+    
+    public void non_aktif_text() {
+        txt_no_mk.setEnabled(false);
+        txt_nama_mk.setEnabled(false);
+    }
+    
+    public void aktif_teks () {
+        txt_no_mk.setEnabled(true);
+        txt_nama_mk.setEnabled(true);
     }
     int row = 0;
     public void tampil_filed() {
@@ -129,7 +140,8 @@ public class frm_mk extends javax.swing.JFrame {
         btn_batal = new javax.swing.JButton();
         btn_keluar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Form Mata Kuliah");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -243,6 +255,11 @@ public class frm_mk extends javax.swing.JFrame {
         });
 
         btn_keluar.setText("Keluar");
+        btn_keluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_keluarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -312,6 +329,7 @@ public class frm_mk extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tambahActionPerformed
@@ -319,6 +337,8 @@ public class frm_mk extends javax.swing.JFrame {
         txt_no_mk.requestFocus();
         btn_ubah.setEnabled(false);
         btn_hapus.setEnabled(false);
+        
+        aktif_teks();
         
     }//GEN-LAST:event_btn_tambahActionPerformed
 
@@ -437,6 +457,14 @@ public class frm_mk extends javax.swing.JFrame {
             System.err.println(e.getMessage());
         }
     }//GEN-LAST:event_btn_hapusActionPerformed
+
+    private void btn_keluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_keluarActionPerformed
+        // TODO add your handling code here:
+        frm_utama utm = new frm_utama();
+        utm.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_btn_keluarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -182,6 +182,7 @@ public class frm_utama extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -205,7 +206,7 @@ public class frm_utama extends javax.swing.JFrame {
         frm_nilai n = new frm_nilai();
         n.setVisible(true);
         
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
