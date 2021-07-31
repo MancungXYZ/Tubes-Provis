@@ -33,6 +33,7 @@ public class frm_nilai extends javax.swing.JFrame {
         
         settableload();
         getDataComboBox();
+        tampil_field();
         non_aktif_teks();
     }
     
@@ -147,10 +148,24 @@ public class frm_nilai extends javax.swing.JFrame {
           }
     }
     
+    
     public void tampil_field(){
-        row = TableNilai.getSelectedRow();
-        combo_nama.setSelectedItem(tableModel.getValueAt(row, 0).toString());
-        combo_mk.setSelectedItem(tableModel.getValueAt(row, 1).toString());
+        
+    }
+    
+    public void reset () {
+//        combo_nama.setSelectedIndex(0);
+        txt_nim.setText("");
+        txt_kehadiran.setText("");
+        txt_tgs1.setText("");
+        txt_tgs2.setText("");
+        txt_tgs3.setText("");
+        
+//        combo_mk.setSelectedIndex(0);
+        txt_kodeMk.setText("");
+        txt_uts.setText("");
+        text_uas.setText("");
+        txt_angkatan.setText("");
     }
     
     public void non_aktif_teks () {
@@ -229,7 +244,13 @@ public class frm_nilai extends javax.swing.JFrame {
         btn_keluar = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Frame Nilai");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -499,24 +520,25 @@ public class frm_nilai extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void combo_namaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_namaActionPerformed
         // TODO add your handling code here:
-        int nama = combo_nama.getSelectedIndex();
+        String nama = combo_nama.getSelectedItem().toString();
         
-        if (nama == 0) {
+        if (nama == "Pilih") {
             JOptionPane.showMessageDialog(null, "Silahkan pilih nama terlebih dahulu");
         } else {
             try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
-            String SQL = "select nim, nama from t_mahasiswa "
+            String SQL = "select nim from t_mahasiswa "
                         + "where nama= '"+nama+"' ";
             ResultSet res = stt.executeQuery(SQL);
             while (res.next()) {
-                txt_nim.setText(res.getString("nim").toString());  
+                txt_nim.setText(res.getString(1));  
             }
             
             res.close();
@@ -533,6 +555,32 @@ public class frm_nilai extends javax.swing.JFrame {
 
     private void combo_mkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_mkActionPerformed
         // TODO add your handling code here:
+        String nama_mk = combo_mk.getSelectedItem().toString();
+        
+        if (nama_mk == "Pilih") {
+            JOptionPane.showMessageDialog(null, "Silahkan pilih nama terlebih dahulu");
+        } else {
+            try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "select kd_mk from t_mata_kuliah "
+                        + "where nama_mk= '"+nama_mk+"' ";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                txt_kodeMk.setText(res.getString(1));  
+            }
+            
+            res.close();
+            stt.close();
+            kon.close();
+          } catch (Exception ex) {
+              JOptionPane.showMessageDialog(null,
+                        ex.getMessage(), "Error",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        }
     }//GEN-LAST:event_combo_mkActionPerformed
 
     private void TableNilaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableNilaiMouseClicked
@@ -570,41 +618,132 @@ public class frm_nilai extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-//        String data[] = new String[2];
-//        
-//        if ((txt_no_mk.getText().isEmpty()) || (txt_nama_mk.getText().isEmpty())) {
-//            JOptionPane.showMessageDialog(null, "Data mata kuliah tidak boleh kosong, Harap isi !");
-//            txt_no_mk.requestFocus();
-//        }
-//        else {
-//            try {
-//                Class.forName(driver);
-//                Connection kon = DriverManager.getConnection(database, user, pass);
-//                Statement stt = kon.createStatement();
-//                String SQL = "INSERT INTO t_mata_kuliah (kd_mk,"
-//                        + "nama_mk) "
-//                        + "VALUES"
-//                        + "('"+txt_no_mk.getText()+"',"
-//                        + "'"+txt_nama_mk.getText()+"')";
-//                
-//                stt.executeUpdate(SQL);
-//                data[0] = txt_no_mk.getText();
-//                data[1] = txt_nama_mk.getText();
-//                tableModel.insertRow(0, data);
-//                stt.close();
-//                kon.close();
-//                btn_ubah.setEnabled(true);
-//                btn_hapus.setEnabled(true);
-//                resetText();
-//                
-//                
-//            }
-//            catch (Exception e) {
-//                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//        }
+        String data[] = new String[15];
+        
+        if ((txt_kehadiran.getText().isEmpty()) || (txt_kodeMk.getText().isEmpty()) || (txt_tgs1.getText().isEmpty() || (txt_tgs2.getText().isEmpty() || (txt_tgs3.getText().isEmpty()) || (txt_nim.getText().isEmpty())))) {
+            JOptionPane.showMessageDialog(null, "Data mata kuliah tidak boleh kosong, Harap isi !");
+            combo_nama.requestFocus();
+            
+        }
+        else {
+            try {
+                //menghitung nilai absen
+                int absen = Integer.parseInt(txt_kehadiran.getText());
+                int nilai_absen = ((absen/14)*100*5)/100;
+                
+                //menghitung nilai tugas
+                Double tugas = Double.valueOf(txt_tgs1.getText());
+                Double tugas2 = Double.valueOf(txt_tgs2.getText());
+                Double tugas3 = Double.valueOf(txt_tgs3.getText());
+                Double nilai_tugas = ((tugas+tugas2+tugas3)*0.25);
+                
+                //menghitung nilai uts
+                int uts = Integer.parseInt(txt_uts.getText());
+                int nilai_uts = (int) (uts*0.3);
+                
+                //menghitung nilai uas
+                int uas = Integer.parseInt(text_uas.getText());
+                int nilai_uas = (int) (uas*0.4);
+                
+                //menghitung nilai akhir dan menentukan index
+                int nilai_akhir = (int) (nilai_absen + nilai_tugas + nilai_uts + nilai_uas);
+                char indeks;
+                String keterangan;
+                
+                if (nilai_akhir >= 80 && nilai_akhir <=100) {
+                    indeks = 'A';
+                    keterangan = "Lulus";
+                } else if(nilai_akhir >= 68) {
+                    indeks = 'B';
+                    keterangan = "Lulus";
+                } else if(nilai_akhir >= 56) {
+                    indeks = 'C';
+                    keterangan = "Lulus";
+                } else if(nilai_akhir >= 45) {
+                    indeks = 'D';
+                    keterangan = "Tidak Lulus";
+                } else {
+                    indeks = 'E';
+                    keterangan = "Tidak Lulus";
+                }
+                
+                if (absen < 11) {
+                    keterangan = "Tidak Lulus";
+                }
+                
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(database, user, pass);
+                Statement stt = kon.createStatement();
+                String SQL = "INSERT INTO nilai (nama,"
+                        + "nama_mk,"
+                        + "absensi,"
+                        + "tugas1,"
+                        + "tugas2,"
+                        + "tugas3,"
+                        + "uts,"
+                        + "uas,"
+                        + "nilai_absen,"
+                        + "nilai_tugas,"
+                        + "nilai_uts,"
+                        + "nilai_uas,"
+                        + "nilai_akhir,"
+                        + "Indeks,"
+                        + "keterangan) "
+                        + "VALUES "
+                        + "('"+combo_nama.getSelectedItem()+"',"
+                        + "'"+combo_mk.getSelectedItem()+"',"
+                        + "'"+absen+"',"
+                        + "'"+tugas+"',"
+                        + "'"+tugas2+"',"
+                        + "'"+tugas3+"',"
+                        + "'"+uts+"',"
+                        + "'"+uas+"',"
+                        + "'"+nilai_absen+"',"
+                        + "'"+nilai_tugas+"',"
+                        + "'"+nilai_uts+"',"
+                        + "'"+nilai_uas+"',"
+                        + "'"+nilai_akhir+"',"
+                        + "'"+indeks+"',"
+                        + "'"+keterangan+"') ";
+                
+                stt.executeUpdate(SQL);
+                data[0] = combo_nama.getSelectedItem().toString();
+                data[1] = combo_mk.getSelectedItem().toString();
+                data[2] = String.valueOf(absen);
+                data[3] = String.valueOf(tugas);
+                data[4] = String.valueOf(tugas2);
+                data[5] = String.valueOf(tugas3);
+                data[6] = String.valueOf(uts);
+                data[7] = String.valueOf(uas);
+                data[8] = String.valueOf(nilai_absen);
+                data[9] = String.valueOf(nilai_tugas);
+                data[10] = String.valueOf(nilai_uts);
+                data[11] = String.valueOf(nilai_uas);
+                data[12] = String.valueOf(nilai_akhir);
+                data[13] = String.valueOf(indeks);
+                data[14] = keterangan;
+                
+                tableModel.insertRow(0, data);
+                
+                btn_ubah.setEnabled(true);
+                btn_hapus.setEnabled(true);
+                reset();
+                
+                stt.close();
+                kon.close();
+            }
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
         
     }//GEN-LAST:event_btn_saveActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        frm_utama utama = new frm_utama();
+        utama.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
         
     /**
      * @param args the command line arguments
