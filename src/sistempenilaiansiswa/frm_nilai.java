@@ -5,6 +5,7 @@
  */
 package sistempenilaiansiswa;
 
+import java.awt.event.KeyEvent;
 import javax.swing.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -33,7 +34,6 @@ public class frm_nilai extends javax.swing.JFrame {
         
         settableload();
         getDataComboBox();
-        tampil_field();
         non_aktif_teks();
     }
     
@@ -150,6 +150,18 @@ public class frm_nilai extends javax.swing.JFrame {
     
     
     public void tampil_field(){
+        //aktifkan teks dan tombol
+        aktif_teks();
+        
+        row = TableNilai.getSelectedRow();
+        combo_nama.setSelectedItem(tableModel.getValueAt(row, 0).toString());
+        combo_mk.setSelectedItem(tableModel.getValueAt(row, 1).toString());
+        txt_kehadiran.setText(tableModel.getValueAt(row, 2).toString());
+        txt_tgs1.setText(tableModel.getValueAt(row, 3).toString());
+        txt_tgs2.setText(tableModel.getValueAt(row, 4).toString());
+        txt_tgs3.setText(tableModel.getValueAt(row, 5).toString());
+        txt_uts.setText(tableModel.getValueAt(row, 6).toString());
+        text_uas.setText(tableModel.getValueAt(row, 7).toString());
         
     }
     
@@ -211,7 +223,7 @@ public class frm_nilai extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_data = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         combo_nama = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
@@ -280,6 +292,12 @@ public class frm_nilai extends javax.swing.JFrame {
 
         jLabel3.setText("Masukan Data");
 
+        txt_data.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_dataKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -288,7 +306,7 @@ public class frm_nilai extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_data, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -297,7 +315,7 @@ public class frm_nilai extends javax.swing.JFrame {
                 .addContainerGap(19, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -311,6 +329,8 @@ public class frm_nilai extends javax.swing.JFrame {
         });
 
         jLabel5.setText("Nim");
+
+        txt_nim.setEditable(false);
 
         jLabel6.setText("Kehadiran");
 
@@ -330,6 +350,8 @@ public class frm_nilai extends javax.swing.JFrame {
         });
 
         jLabel11.setText("Kode MK");
+
+        txt_kodeMk.setEditable(false);
 
         jLabel12.setText("UTS");
 
@@ -365,6 +387,11 @@ public class frm_nilai extends javax.swing.JFrame {
         btn_ubah.setText("Ubah");
 
         btn_hapus.setText("Hapus");
+        btn_hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_hapusActionPerformed(evt);
+            }
+        });
 
         btn_save.setText("Simpan");
         btn_save.addActionListener(new java.awt.event.ActionListener() {
@@ -613,6 +640,7 @@ public class frm_nilai extends javax.swing.JFrame {
         btn_hapus.setEnabled(true);
         btn_ubah.setEnabled(true);
         
+        reset();
         non_aktif_teks();
     }//GEN-LAST:event_btn_batalActionPerformed
 
@@ -744,6 +772,72 @@ public class frm_nilai extends javax.swing.JFrame {
         frm_utama utama = new frm_utama();
         utama.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
+
+    private void btn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hapusActionPerformed
+        // TODO add your handling code here:
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "DELETE from nilai "
+                         + "where "
+                         + "nama='"+tableModel.getValueAt(row, 0).toString()+"'";
+            
+            stt.executeUpdate(SQL);
+            tableModel.removeRow(row);
+            stt.close();
+            kon.close();
+            
+            reset();
+        }
+        catch(Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }//GEN-LAST:event_btn_hapusActionPerformed
+
+    private void txt_dataKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dataKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            tableModel.setRowCount(0);
+        
+        //gunakan query untuk mencari
+        String cari = txt_data.getText();
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "Select * from nilai where nama LIKE '%" + cari + "%'"; //https://stackoverflow.com/questions/6599950/how-to-use-mysql-like-operator-in-jdbc
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                data[3] = res.getString(4);
+                data[4] = res.getString(5);
+                data[5] = res.getString(6);
+                data[6] = res.getString(7);
+                data[7] = res.getString(8);
+                data[8] = res.getString(9);
+                data[9] = res.getString(10);
+                data[10] = res.getString(11);
+                data[11] = res.getString(12);
+                data[12] = res.getString(13);
+                data[13] = res.getString(14);
+                data[14] = res.getString(15);
+                tableModel.addRow(data);
+            }
+            res.close();
+            kon.close();
+            stt.close();
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+        }
+    }//GEN-LAST:event_txt_dataKeyPressed
         
     /**
      * @param args the command line arguments
@@ -808,9 +902,9 @@ public class frm_nilai extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField text_uas;
     private javax.swing.JTextField txt_angkatan;
+    private javax.swing.JTextField txt_data;
     private javax.swing.JTextField txt_kehadiran;
     private javax.swing.JTextField txt_kodeMk;
     private javax.swing.JTextField txt_nim;

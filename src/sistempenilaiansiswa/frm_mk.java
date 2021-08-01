@@ -5,6 +5,7 @@
  */
 package sistempenilaiansiswa;
 
+import java.awt.event.KeyEvent;
 import javax.swing.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -125,7 +126,7 @@ public class frm_mk extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_input = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txt_no_mk = new javax.swing.JTextField();
@@ -172,7 +173,13 @@ public class frm_mk extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel3.setText("Masukan Data ");
+        jLabel3.setText("Masukan Data MK");
+
+        txt_input.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_inputKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -182,7 +189,7 @@ public class frm_mk extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_input, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -191,7 +198,7 @@ public class frm_mk extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
 
@@ -466,6 +473,37 @@ public class frm_mk extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_keluarActionPerformed
 
+    private void txt_inputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_inputKeyPressed
+        //https://stackoverflow.com/questions/4419667/detect-enter-press-in-jtextfield
+        
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            tableModel.setRowCount(0);
+        
+        String input = txt_input.getText();
+        //gunakan query untuk mencari
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "Select * from t_mata_kuliah where nama_mk LIKE '%" + input + "%'";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                tableModel.addRow(data);
+            }
+            res.close();
+            kon.close();
+            stt.close();
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+        }
+    }//GEN-LAST:event_txt_inputKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -517,7 +555,7 @@ public class frm_mk extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txt_input;
     private javax.swing.JTextField txt_nama_mk;
     private javax.swing.JTextField txt_no_mk;
     // End of variables declaration//GEN-END:variables
