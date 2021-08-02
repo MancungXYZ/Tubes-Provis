@@ -381,6 +381,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txt_angkatan">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="2019"/>
+      </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -418,6 +421,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Ubah"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_ubahActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_hapus">
       <Properties>

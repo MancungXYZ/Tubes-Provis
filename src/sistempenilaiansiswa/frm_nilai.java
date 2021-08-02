@@ -359,6 +359,8 @@ public class frm_nilai extends javax.swing.JFrame {
 
         jLabel14.setText("Angkatan");
 
+        txt_angkatan.setText("2019");
+
         TableNilai.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -385,6 +387,11 @@ public class frm_nilai extends javax.swing.JFrame {
         });
 
         btn_ubah.setText("Ubah");
+        btn_ubah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ubahActionPerformed(evt);
+            }
+        });
 
         btn_hapus.setText("Hapus");
         btn_hapus.addActionListener(new java.awt.event.ActionListener() {
@@ -637,6 +644,9 @@ public class frm_nilai extends javax.swing.JFrame {
 
     private void btn_batalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_batalActionPerformed
         // TODO add your handling code here:
+        btn_simpan.setEnabled(true);
+        btn_save.setEnabled(true);
+        btn_keluar.setEnabled(true);
         btn_hapus.setEnabled(true);
         btn_ubah.setEnabled(true);
         
@@ -838,6 +848,63 @@ public class frm_nilai extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_txt_dataKeyPressed
+
+    private void btn_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ubahActionPerformed
+        // TODO add your handling code here:
+        String nama_mhs = combo_nama.getSelectedItem().toString();
+        String nama_mk = String.valueOf(combo_mk.getSelectedIndex());
+        String nim = txt_nim.getText();
+        String kehadiran = txt_kehadiran.getText();
+        String tugas1 = txt_tgs1.getText();
+        String tugas2 = txt_tgs2.getText();
+        String tugas3 = txt_tgs3.getText();
+        String kodeMK = txt_kodeMk.getText();
+        String uts = txt_uts.getText();
+        String uas = text_uas.getText();
+        
+        if ((txt_kehadiran.getText().isEmpty()) || (txt_kodeMk.getText().isEmpty()) || (txt_tgs1.getText().isEmpty() || (txt_tgs2.getText().isEmpty() || (txt_tgs3.getText().isEmpty()) || (txt_nim.getText().isEmpty())))) {
+            
+        } else {
+            try {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(database, user, pass);
+                Statement stt = kon.createStatement();
+                String SQL = "UPDATE nilai "
+                        + "SET "
+                        + "nama = '"+nama_mhs+"',"
+                        + "nama_mk = '"+nama_mk+"',"
+                        + "absensi = '"+kehadiran+"',"
+                        + "tugas1 = '"+tugas1+"',"
+                        + "tugas2 = '"+tugas2+"',"
+                        + "tugas3 = '"+tugas3+"',"
+                        + "nilai_uts = '"+uts+"',"
+                        + "nilai_uas = '"+uas+"'"
+                        + "WHERE nama= '" + tableModel.getValueAt(row, 0).toString() + "'";
+                
+                stt.executeUpdate(SQL);
+                
+                
+                data[0] = nama_mhs;
+                data[1] = nama_mk;
+                data[2] = kehadiran;
+                data[3] = tugas1;
+                data[4] = tugas2;
+                data[5] = tugas3;
+                data[6] = uts;
+                data[7] = uas;
+                
+                tableModel.removeRow(row);
+                tableModel.insertRow(row, data);
+                stt.close();
+                kon.close();
+                reset();
+            }
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        
+    }//GEN-LAST:event_btn_ubahActionPerformed
         
     /**
      * @param args the command line arguments

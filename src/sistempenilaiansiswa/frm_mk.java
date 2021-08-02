@@ -33,7 +33,7 @@ public class frm_mk extends javax.swing.JFrame {
         TableMataKuliah.setModel(tableModel);
         
         settableload();
-        non_aktif_text();
+        
     }
     
     private javax.swing.table.DefaultTableModel tableModel = getDefaultTabelModel();
