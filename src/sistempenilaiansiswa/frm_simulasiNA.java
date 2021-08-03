@@ -625,7 +625,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                 //menghitung nilai absen
                 Double absen = Double.valueOf(p_absen.getText());
                 Double kehadiran = Double.valueOf(khdrn.getText());
-                Double nilai_absen = ((((kehadiran/14)*100*absen))/100);
+                Double nilai_absen = (((kehadiran/14)*100*absen)/100);
                 
                 //menghitung nilai tugas
                 Double pr_tugas = Double.valueOf(p_tugas.getText());
@@ -666,7 +666,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                     keterangan = "Tidak Lulus";
                 }
                 
-                if (absen < 11) {
+                if (kehadiran < 11) {
                     keterangan = "Tidak Lulus";
                 }
                 
