@@ -165,6 +165,7 @@ public class frm_daftar extends javax.swing.JFrame {
 
     private void txt_daftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_daftarActionPerformed
         // Ambil value dari textfield
+        
         String username = txt_usrnm.getText();
         String password = txt_pw.getText();
         
@@ -174,14 +175,13 @@ public class frm_daftar extends javax.swing.JFrame {
             try {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database, user, pass);
-                Statement stt = kon.createStatement();
-                String SQL = "INSERT INTO user(username,"
+                kon.createStatement().execute("INSERT INTO user(username,"
                         + "password) "
                         + "VALUES "
                         + "('"+username+"',"
-                        + "'"+password+"')";
+                        + "'"+password+"')");
+                JOptionPane.showMessageDialog(null, "Akun berhasil didaftarkan");
                 
-                var res = stt.executeUpdate(SQL);
                 txt_usrnm.setText("");
                 txt_pw.setText("");
                 

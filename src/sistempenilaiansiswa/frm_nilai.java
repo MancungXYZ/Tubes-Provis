@@ -673,18 +673,18 @@ public class frm_nilai extends javax.swing.JFrame {
                 Double tugas = Double.valueOf(txt_tgs1.getText());
                 Double tugas2 = Double.valueOf(txt_tgs2.getText());
                 Double tugas3 = Double.valueOf(txt_tgs3.getText());
-                Double nilai_tugas = ((tugas+tugas2+tugas3)*0.25);
+                Double nilai_tugas = (((tugas+tugas2+tugas3)/3)*(0.25));
                 
                 //menghitung nilai uts
-                int uts = Integer.parseInt(txt_uts.getText());
-                int nilai_uts = (int) (uts*0.3);
+                Double uts = Double.valueOf(txt_uts.getText());
+                Double nilai_uts = (uts*0.3);
                 
                 //menghitung nilai uas
-                int uas = Integer.parseInt(text_uas.getText());
-                int nilai_uas = (int) (uas*0.4);
+                Double uas = Double.valueOf(text_uas.getText());
+                Double nilai_uas = (uas*0.4);
                 
                 //menghitung nilai akhir dan menentukan index
-                int nilai_akhir = (int) (nilai_absen + nilai_tugas + nilai_uts + nilai_uas);
+                Double nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
                 char indeks;
                 String keterangan;
                 
