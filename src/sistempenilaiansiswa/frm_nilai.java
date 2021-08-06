@@ -666,8 +666,8 @@ public class frm_nilai extends javax.swing.JFrame {
         // TODO add your handling code here:
         String data[] = new String[15];
         
-        if ((txt_kehadiran.getText().isEmpty()) || (txt_kodeMk.getText().isEmpty()) || (txt_tgs1.getText().isEmpty() || (txt_tgs2.getText().isEmpty() || (txt_tgs3.getText().isEmpty()) || (txt_nim.getText().isEmpty())))) {
-            JOptionPane.showMessageDialog(null, "Data mata kuliah tidak boleh kosong, Harap isi !");
+        if ((txt_kehadiran.getText().isEmpty()) || (txt_kodeMk.getText().isEmpty()) || (txt_tgs1.getText().isEmpty() || (txt_tgs2.getText().isEmpty() || (txt_tgs3.getText().isEmpty()) || (txt_uts.getText().isEmpty() || (text_uas.getText().isEmpty()) || (txt_angkatan.getDate() == null)  )))) {
+            JOptionPane.showMessageDialog(null, "Data nilai mahasiswa tidak boleh kosong, Ulangi!");
             combo_nama.requestFocus();
             
         }
@@ -675,6 +675,12 @@ public class frm_nilai extends javax.swing.JFrame {
             try {
                 //menghitung nilai absen
                 int absen = Integer.parseInt(txt_kehadiran.getText());
+                
+                if (absen > 14) {
+                    JOptionPane.showMessageDialog(null, "Maximal pertemuan adalah 14");
+                    txt_kehadiran.requestFocus();
+                }
+                
                 int nilai_absen = ((absen/14)*100*5)/100;
                 
                 //menghitung nilai tugas
@@ -717,6 +723,10 @@ public class frm_nilai extends javax.swing.JFrame {
                     keterangan = "Tidak Lulus";
                 }
                 
+                if ((tugas > 100) || (tugas2 > 100) || (tugas3 > 100) || (uts > 100) || (uas > 100)) {
+                    JOptionPane.showMessageDialog(null, "Maximal nilai adalah 100, Ulangi!");
+                    txt_tgs1.requestFocus();
+                } else {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database, user, pass);
                 Statement stt = kon.createStatement();
@@ -779,6 +789,7 @@ public class frm_nilai extends javax.swing.JFrame {
                 
                 stt.close();
                 kon.close();
+                } //endif max nilai input 100
             }
             catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);

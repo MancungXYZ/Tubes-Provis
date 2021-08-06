@@ -170,7 +170,7 @@ public class frm_login extends javax.swing.JFrame {
             String sql = "Select username, password From user WHERE username='"+txt_username.getText()+"' AND password='"+txt_pass.getText()+"' ";
             ResultSet res = stt.executeQuery(sql);
             if (res.next()) {
-                JOptionPane.showMessageDialog(null, "Selamat Datang");
+                JOptionPane.showMessageDialog(null, "Selamat Datang, Admin");
                 frm_transaksi trs = new frm_transaksi();
                 trs.setVisible(true);
                     

@@ -430,8 +430,8 @@ public class frm_mhs extends javax.swing.JFrame {
         // TODO add your handling code here:
         String data[] = new String[5];
         
-        if ((txt_nim.getText().isEmpty()) || (txt_tanggal_lahir.getDateFormatString().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, Harap isi !");
+        if ((txt_nim.getText().isEmpty()) || (txt_tanggal_lahir.getDate() == null) || (txt_nama.getText().isEmpty()) || (txt_tempat_lahir.getText().isEmpty()) || (txt_alamat.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data mahasiswa tidak boleh kosong, Ulangi!");
             txt_nim.requestFocus();
         }
         else {

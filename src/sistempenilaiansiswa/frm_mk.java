@@ -354,7 +354,7 @@ public class frm_mk extends javax.swing.JFrame {
         String data[] = new String[2];
         
         if ((txt_no_mk.getText().isEmpty()) || (txt_nama_mk.getText().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Data mata kuliah tidak boleh kosong, Harap isi !");
+            JOptionPane.showMessageDialog(null, "Data mata kuliah tidak boleh kosong, Ulangi!");
             txt_no_mk.requestFocus();
         }
         else {

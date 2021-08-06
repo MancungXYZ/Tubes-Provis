@@ -258,7 +258,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         btn_btl = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Simulasi Nilai Akhir");
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
@@ -625,7 +625,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         // Ambil semua value pada textfield
         String data[] = new String [18];
         
-        if ((kode_mk.getText().isEmpty()) || (p_absen.getText().isEmpty()) || (txt_tgs1.getText().isEmpty() || (txt_tgs2.getText().isEmpty() || (txt_tgs3.getText().isEmpty()) || (p_tugas.getText().isEmpty() || (p_uas.getText().isEmpty() || (p_uts.getText().isEmpty()) ))))) {
+        if ((kode_mk.getText().isEmpty()) || (p_absen.getText().isEmpty()) || (txt_tgs1.getText().isEmpty() || (txt_tgs2.getText().isEmpty() || (txt_tgs3.getText().isEmpty()) || (p_tugas.getText().isEmpty() || (p_uas.getText().isEmpty() || (p_uts.getText().isEmpty()) || (khdrn.getText().isEmpty()) || (txt_uts.getText().isEmpty()) ||(txt_uas.getText().isEmpty()) ))))) {
             JOptionPane.showMessageDialog(null, "Data untuk simulasi tidak boleh kosong, Harap isi !");
             p_absen.requestFocus();
             
@@ -633,9 +633,15 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         else {
             try {
                 //menghitung nilai absen
+                Double hadir = Double.valueOf(khdrn.getText());
+                
+                if (hadir > 14) {
+                    JOptionPane.showMessageDialog(null, "Maximal Pertemuan adalah 14");
+                    khdrn.requestFocus();
+                } else {
                 Double absen = Double.valueOf(p_absen.getText());
-                Double kehadiran = Double.valueOf(khdrn.getText());
-                Double nilai_absen = (((kehadiran/14)*100*absen)/100);
+                
+                Double nilai_absen = (((hadir/14)*100*absen)/100);
                 
                 //menghitung nilai tugas
                 Double pr_tugas = Double.valueOf(p_tugas.getText());
@@ -676,9 +682,15 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                     keterangan = "Tidak Lulus";
                 }
                 
-                if (kehadiran < 11) {
+                if (hadir < 11) {
                     keterangan = "Tidak Lulus";
                 }
+                
+                if ((tugas > 100) || (tugas2 > 100) || (tugas3 > 100) || (uts > 100) || (uas > 100)) {
+                    JOptionPane.showMessageDialog(null, "Maximal nilai adalah 100, Ulangi!");
+                    txt_tgs1.requestFocus();
+                } else {
+                
                 
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database, user, pass);
@@ -707,7 +719,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                         + "'"+pr_tugas+"',"
                         + "'"+pr_uts+"',"
                         + "'"+pr_uas+"',"
-                        + "'"+kehadiran+"',"
+                        + "'"+hadir+"',"
                         + "'"+tugas+"',"
                         + "'"+tugas2+"',"
                         + "'"+tugas3+"',"
@@ -727,7 +739,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                 data[2] = String.valueOf(pr_tugas);
                 data[3] = String.valueOf(pr_uts);
                 data[4] = String.valueOf(pr_uas);
-                data[5] = String.valueOf(kehadiran);
+                data[5] = String.valueOf(hadir);
                 data[6] = String.valueOf(tugas);
                 data[7] = String.valueOf(tugas2);
                 data[8] = String.valueOf(tugas3);
@@ -750,6 +762,8 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                 
                 stt.close();
                 kon.close();
+                    } //endif validasi nilai input max 100
+                } //end if validasi absen > 14
             }
             catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -779,16 +793,76 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         String puas = p_uas.getText();
         String kehadiran = khdrn.getText();
         String tugas1 = txt_tgs1.getText();
-        String tugas2 = txt_tgs2.getText();
-        String tugas3 = txt_tgs3.getText();
-        String uts = txt_uts.getText();
-        String uas = txt_uas.getText();
+//        String tugas2 = txt_tgs2.getText();
+//        String tugas3 = txt_tgs3.getText();
+//        String uts = txt_uts.getText();
+//        String uas = txt_uas.getText();
+        
+        
         
         if ((kode_mk.getText().isEmpty()) || (p_absen.getText().isEmpty()) || (txt_tgs1.getText().isEmpty() || (txt_tgs2.getText().isEmpty() || (txt_tgs3.getText().isEmpty()) || (p_tugas.getText().isEmpty() || (p_uas.getText().isEmpty() || (p_uts.getText().isEmpty()) ))))) {
             
         } else {
             try {
-            Class.forName(driver);
+                 //menghitung nilai absen
+                Double hadir = Double.valueOf(khdrn.getText());
+                
+                if (hadir > 14) {
+                    JOptionPane.showMessageDialog(null, "Maximal Pertemuan adalah 14");
+                    khdrn.requestFocus();
+                } else {
+                Double absen = Double.valueOf(p_absen.getText());
+                
+                Double nilai_absen = (((hadir/14)*100*absen)/100);
+                
+                //menghitung nilai tugas
+                Double pr_tugas = Double.valueOf(p_tugas.getText());
+                Double tugas = Double.valueOf(txt_tgs1.getText());
+                Double tugas2 = Double.valueOf(txt_tgs2.getText());
+                Double tugas3 = Double.valueOf(txt_tgs3.getText());
+                Double nilai_tugas = (((tugas+tugas2+tugas3)/3)*(pr_tugas/100));
+                
+                //menghitung nilai uts
+                Double pr_uts = Double.valueOf(p_uts.getText());
+                Double uts = Double.valueOf(txt_uts.getText());
+                Double nilai_uts = uts * (pr_uts/100);
+                
+                //menghitung nilai uas
+                Double pr_uas = Double.valueOf(p_uas.getText());
+                Double uas = Double.valueOf(txt_uas.getText());
+                Double nilai_uas = uas * (pr_uas/100);
+                
+                //menghitung nilai akhir dan menentukan index
+                Double nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+                char indeks;
+                String keterangan;
+                
+                if (nilai_akhir >= 80 && nilai_akhir <=100) {
+                    indeks = 'A';
+                    keterangan = "Lulus";
+                } else if(nilai_akhir >= 68) {
+                    indeks = 'B';
+                    keterangan = "Lulus";
+                } else if(nilai_akhir >= 56) {
+                    indeks = 'C';
+                    keterangan = "Lulus";
+                } else if(nilai_akhir >= 45) {
+                    indeks = 'D';
+                    keterangan = "Tidak Lulus";
+                } else {
+                    indeks = 'E';
+                    keterangan = "Tidak Lulus";
+                }
+                
+                if (hadir < 11) {
+                    keterangan = "Tidak Lulus";
+                }
+                
+                if ((tugas > 100) || (tugas2 > 100) || (tugas3 > 100) || (uts > 100) || (uas > 100)) {
+                    JOptionPane.showMessageDialog(null, "Maximal nilai adalah 100, Ulangi!");
+                    txt_tgs1.requestFocus();
+                } else {
+                Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database, user, pass);
                 Statement stt = kon.createStatement();
                 String SQL = "UPDATE simulasi "
@@ -803,7 +877,14 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                         + "tgs2 = '"+tugas2+"',"
                         + "tgs3 = '"+tugas3+"',"
                         + "uts = '"+uts+"',"
-                        + "uas = '"+uas+"'"
+                        + "uas = '"+uas+"', "
+                        + "nilai_absen = '"+nilai_absen+"', "
+                        + "nilai_tugas = '"+nilai_tugas+"', "
+                        + "nilai_uts = '"+nilai_uts+"', "
+                        + "nilai_uas = '"+nilai_uas+"', "
+                        + "nilai_akhir = '"+nilai_akhir+"' ,"
+                        + "indeks = '"+indeks+"', "
+                        + "keterangan = '"+keterangan+"'"
                         + "WHERE nama_mk= '" + tableModel.getValueAt(row, 0).toString() + "'";
                 
                 stt.executeUpdate(SQL);
@@ -816,10 +897,17 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                 data[4] = puas;
                 data[5] = kehadiran;
                 data[6] = tugas1;
-                data[7] = tugas2;
-                data[8] = tugas3;
-                data[9] = uts;
-                data[10] = uas;
+                data[7] = String.valueOf(tugas2);
+                data[8] = String.valueOf(tugas3);
+                data[9] = String.valueOf(uts);
+                data[10] = String.valueOf(uas);
+                data[11] = String.valueOf(nilai_absen);
+                data[12] = String.valueOf(nilai_tugas);
+                data[13] = String.valueOf(nilai_uts);
+                data[14] = String.valueOf(nilai_uas);
+                data[15] = String.valueOf(nilai_akhir);
+                data[16] = String.valueOf(indeks);
+                data[17] = String.valueOf(keterangan);
                 
                 tableModel.removeRow(row);
                 tableModel.insertRow(row, data);
@@ -830,6 +918,8 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                 kon.close();
                 
                 reset_teks();
+                    } //end if validasi max nilai input 100
+                } //endif
             }
             catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);

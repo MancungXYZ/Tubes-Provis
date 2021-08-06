@@ -566,6 +566,8 @@ public class frm_transaksi extends javax.swing.JFrame {
                 
                 tableModel.insertRow(0, data);
                 
+                JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
+                
                 total_bayar();
                 stt.close();
                 kon.close();
