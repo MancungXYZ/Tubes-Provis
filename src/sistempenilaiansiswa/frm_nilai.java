@@ -626,11 +626,18 @@ public class frm_nilai extends javax.swing.JFrame {
     }//GEN-LAST:event_TableNilaiMouseClicked
 
     private void btn_keluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_keluarActionPerformed
-        // TODO add your handling code here:
+        // meminta konfirmasi keluar frm
+        int jawab = JOptionPane.showOptionDialog(this, 
+                    "Apakah Anda Yakin Ingin Keluar?", 
+                    "Konfirmasi", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (jawab == JOptionPane.YES_OPTION) {
         frm_utama utm = new frm_utama();
         utm.setVisible(true);
         
         this.setVisible(false);
+        }
     }//GEN-LAST:event_btn_keluarActionPerformed
 
     private void btn_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_simpanActionPerformed
@@ -768,6 +775,8 @@ public class frm_nilai extends javax.swing.JFrame {
                 btn_hapus.setEnabled(true);
                 reset();
                 
+                JOptionPane.showMessageDialog(null, "Data nilai mahasiswa berhasil disimpan");
+                
                 stt.close();
                 kon.close();
             }
@@ -786,6 +795,14 @@ public class frm_nilai extends javax.swing.JFrame {
 
     private void btn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hapusActionPerformed
         // TODO add your handling code here:
+        int jawab = JOptionPane.showOptionDialog(this, 
+                    "Apakah Anda Yakin Untuk Menghapus Data Ini?", 
+                    "Konfirmasi", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+        
+        if (jawab == JOptionPane.YES_OPTION) {
+        
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
@@ -796,6 +813,9 @@ public class frm_nilai extends javax.swing.JFrame {
             
             stt.executeUpdate(SQL);
             tableModel.removeRow(row);
+            
+            
+            
             stt.close();
             kon.close();
             
@@ -804,6 +824,7 @@ public class frm_nilai extends javax.swing.JFrame {
         catch(Exception e) {
             System.err.println(e.getMessage());
         }
+      }
     }//GEN-LAST:event_btn_hapusActionPerformed
 
     private void txt_dataKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dataKeyPressed
@@ -838,6 +859,7 @@ public class frm_nilai extends javax.swing.JFrame {
                 data[14] = res.getString(15);
                 tableModel.addRow(data);
             }
+            
             res.close();
             kon.close();
             stt.close();
@@ -896,6 +918,9 @@ public class frm_nilai extends javax.swing.JFrame {
                 
                 tableModel.removeRow(row);
                 tableModel.insertRow(row, data);
+                
+                JOptionPane.showMessageDialog(null, "Data nilai mahasiswa berhasil diubah");
+                
                 stt.close();
                 kon.close();
                 reset();

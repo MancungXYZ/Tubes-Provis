@@ -89,7 +89,7 @@ public class frm_utama extends javax.swing.JFrame {
         jToolBar1.add(jButton3);
         jToolBar1.add(jSeparator3);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistempenilaiansiswa/simulasi.png"))); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistempenilaiansiswa/evaluation-removebg-preview.png"))); // NOI18N
         jButton4.setText("Simulasi Nilai Akhir");
         jButton4.setFocusable(false);
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -102,7 +102,7 @@ public class frm_utama extends javax.swing.JFrame {
         jToolBar1.add(jButton4);
         jToolBar1.add(jSeparator4);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistempenilaiansiswa/journal-icon-png-24.jpg"))); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sistempenilaiansiswa/new gambar.png"))); // NOI18N
         jButton5.setText("Simulasi Kasus");
         jButton5.setFocusable(false);
         jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -221,7 +221,7 @@ public class frm_utama extends javax.swing.JFrame {
         frm_nilai n = new frm_nilai();
         n.setVisible(true);
         
-        this.dispose();
+        this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

@@ -378,6 +378,8 @@ public class frm_mk extends javax.swing.JFrame {
                 btn_hapus.setEnabled(true);
                 resetText();
                 
+                JOptionPane.showMessageDialog(null, "Data mata kuliah berhasil disimpan");
+                
                 
             }
             catch (Exception e) {
@@ -437,6 +439,8 @@ public class frm_mk extends javax.swing.JFrame {
                 kon.close();
                 resetText();
                 btn_simpan.setEnabled(false);
+                
+                JOptionPane.showMessageDialog(null, "Data mata kuliah berhasil diubah");
             }
             catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -446,6 +450,14 @@ public class frm_mk extends javax.swing.JFrame {
 
     private void btn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hapusActionPerformed
         // TODO add your handling code here:
+        int jawab = JOptionPane.showOptionDialog(this, 
+                    "Apakah Anda Yakin Untuk Menghapus Data Ini?", 
+                    "Konfirmasi", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+        
+        if (jawab == JOptionPane.YES_OPTION) {
+        
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
@@ -463,14 +475,22 @@ public class frm_mk extends javax.swing.JFrame {
         catch(Exception e) {
             System.err.println(e.getMessage());
         }
+      }
     }//GEN-LAST:event_btn_hapusActionPerformed
 
     private void btn_keluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_keluarActionPerformed
-        // TODO add your handling code here:
+        // meminta konfirmasi keluar frm
+        int jawab = JOptionPane.showOptionDialog(this, 
+                    "Apakah Anda Yakin Ingin Keluar?", 
+                    "Konfirmasi", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (jawab == JOptionPane.YES_OPTION) {
         frm_utama utm = new frm_utama();
         utm.setVisible(true);
         
-        this.dispose();
+        this.setVisible(false);
+        }
     }//GEN-LAST:event_btn_keluarActionPerformed
 
     private void txt_inputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_inputKeyPressed

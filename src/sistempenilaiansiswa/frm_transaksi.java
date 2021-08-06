@@ -95,7 +95,7 @@ public class frm_transaksi extends javax.swing.JFrame {
           }
     }
     
-    String data[] = new String [7];
+    String data[] = new String [8];
     private void settableload(){
         String stat = "";
         
@@ -114,6 +114,7 @@ public class frm_transaksi extends javax.swing.JFrame {
                 data[4] = res.getString(5);
                 data[5] = res.getString(6);
                 data[6] = res.getString(7);
+                data[7] = res.getString(8);
                 
                 tableModel.addRow(data);
             }
@@ -204,7 +205,13 @@ public class frm_transaksi extends javax.swing.JFrame {
 
         jLabel5.setText("jLabel5");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Frame_Transaksi");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -609,17 +616,24 @@ public class frm_transaksi extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_porsiKeyPressed
+    
     int row=0;
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        int jawab = JOptionPane.showOptionDialog(this, 
+                    "Apakah Anda Yakin Untuk Menghapus Data Ini?", 
+                    "Konfirmasi", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
         
+        if (jawab == JOptionPane.YES_OPTION) {
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
             String SQL = "DELETE from t_transaksi "
                          + "where "
-                         + "no_nota='"+tableModel.getValueAt(row, 0).toString()+"'";
+                         + "id_menu='"+tableModel.getValueAt(row, 2).toString()+"'";
             
             stt.executeUpdate(SQL);
             tableModel.removeRow(row);
@@ -632,6 +646,7 @@ public class frm_transaksi extends javax.swing.JFrame {
         catch(Exception e) {
             System.err.println(e.getMessage());
         }
+      }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txt_cashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cashActionPerformed
@@ -651,6 +666,14 @@ public class frm_transaksi extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Transaksi berhasil");
         }
     }//GEN-LAST:event_txt_cashKeyPressed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // Ketika pengguna menekan tombol close alihkan ke frm_login
+        frm_login lgn = new frm_login();
+        lgn.setVisible(true);
+        
+        this.setVisible(false);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

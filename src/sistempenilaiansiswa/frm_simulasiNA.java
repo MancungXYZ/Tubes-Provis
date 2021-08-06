@@ -558,10 +558,20 @@ public class frm_simulasiNA extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        int jawab = JOptionPane.showOptionDialog(this, 
+                    "Apakah Anda Yakin Ingin Keluar?", 
+                    "Konfirmasi", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+        
+        if (jawab == JOptionPane.YES_OPTION) {
+        
         frm_utama utm = new frm_utama();
         utm.setVisible(true);
         
-        this.dispose();
+        this.setVisible(false);
+        
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void combo_mkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_mkActionPerformed
@@ -736,6 +746,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                 btn_hps.setEnabled(true);
                 btn_ubh.setEnabled(true);
                 
+                JOptionPane.showMessageDialog(null, "Data berhasil tersimpan");
                 
                 stt.close();
                 kon.close();
@@ -812,6 +823,9 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                 
                 tableModel.removeRow(row);
                 tableModel.insertRow(row, data);
+                
+                JOptionPane.showMessageDialog(null, "Perubahaan data berhasil disimpan");
+                
                 stt.close();
                 kon.close();
                 
@@ -825,6 +839,14 @@ public class frm_simulasiNA extends javax.swing.JFrame {
 
     private void btn_hpsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hpsActionPerformed
         // TODO add your handling code here:
+        int jawab = JOptionPane.showOptionDialog(this, 
+                    "Apakah Anda Yakin Untuk Menghapus Data Ini?", 
+                    "Konfirmasi", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+        
+        if (jawab == JOptionPane.YES_OPTION) {
+        
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
@@ -842,6 +864,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         catch(Exception e) {
             System.err.println(e.getMessage());
         }
+      }
     }//GEN-LAST:event_btn_hpsActionPerformed
 
     /**
